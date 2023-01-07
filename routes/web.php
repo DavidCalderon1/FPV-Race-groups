@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\TeamController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,8 +22,16 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-require __DIR__.'/auth.php';
+
+Route::get('/home', function () {
+    return view('home');
+})->middleware('auth')->name('app_route');
+
+Route::resource('teams', TeamController::class);
 
 Route::view('/{any}', 'dashboard')
     ->middleware('auth')
     ->where('any', '.*');
+
+
+require __DIR__.'/auth.php';
