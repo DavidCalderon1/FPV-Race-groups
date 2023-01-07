@@ -1,7 +1,7 @@
 <template>
     <div v-if="errors">
         <div v-for="(v, k) in errors" :key="k" class="bg-red-400 text-white rounded font-bold mb-4 shadow-lg py-2 px-4 pr-0">
-            <p v-for="error in v" :key="error" class="text-sm">
+            <p v-for="error in v" :key="error" class="text-sm pr-4">
                 {{ error }}
             </p>
         </div>
@@ -55,19 +55,23 @@
 
 <script setup>
 import useCompanies from "@/composables/companies";
-import { onMounted } from "vue";
+import {onMounted, ref} from "vue";
 
 const { errors, company, getCompany, updateCompany } = useCompanies()
 const props = defineProps({
     id: {
         required: true,
         type: String
-    }
+    },
 })
+const emits = defineEmits(['close-modal'])
 
 onMounted(getCompany(props.id))
 
 const saveCompany = async () => {
     await updateCompany(props.id)
+    if (errors.value === '') {
+        emits('close-modal', 'Registro actualizado')
+    }
 }
 </script>

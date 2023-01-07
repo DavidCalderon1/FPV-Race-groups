@@ -1,7 +1,7 @@
 <template>
     <div v-if="errors">
         <div v-for="(v, k) in errors" :key="k" class="bg-red-400 text-white rounded font-bold mb-4 shadow-lg py-2 px-4 pr-0">
-            <p v-for="error in v" :key="error" class="text-sm">
+            <p v-for="error in v" :key="error" class="text-sm pr-4">
                 {{ error }}
             </p>
         </div>
@@ -64,7 +64,11 @@ const form = reactive({
     'website': '',
 })
 const { errors, storeCompany } = useCompanies()
+const emits = defineEmits(['close-modal'])
 const saveCompany = async () => {
     await storeCompany({ ...form });
+    if (errors.value === '') {
+        emits('close-modal', 'Registro creado')
+    }
 }
 </script>
