@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\TeamController;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,23 +16,29 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return Inertia::render('Welcome', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+Route::group(['middleware' => ['auth', 'verified']], function () {
+    Route::get('/dashboard', function () {
+        return Inertia::render('Dashboard');
+    })->name('dashboard');
+
+    Route::get('/teams', function () {
+        return Inertia::render('Teams/TeamsIndex');
+    })->name('teams');
+
+    Route::get('/companies', function () {
+        return Inertia::render('Companies/CompaniesIndex');
+    })->name('companies');
+});
 
 
-Route::get('/home', function () {
-    return view('home');
-})->middleware('auth')->name('app_route');
-
-Route::resource('teams', TeamController::class);
-
-Route::view('/{any}', 'dashboard')
-    ->middleware('auth')
-    ->where('any', '.*');
 
 
 require __DIR__.'/auth.php';

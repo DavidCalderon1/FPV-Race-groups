@@ -1,27 +1,27 @@
 import { ref } from 'vue'
 import axios from "axios";
 
-export default function useCompanies() {
-    const companies = ref([])
-    const company = ref([])
+export default function useTeams() {
+    const teams = ref([])
+    const team = ref([])
     const errors = ref('')
     const success = ref('')
     const modalActive = ref(null);
 
-    const getCompanies = async () => {
-        let response = await axios.get('/api/companies')
-        companies.value = response.data.data;
+    const getTeams = async () => {
+        let response = await axios.get('/api/teams')
+        teams.value = response.data.data;
     }
 
-    const getCompany = async (id) => {
-        let response = await axios.get('/api/companies/' + id)
-        company.value = response.data.data;
+    const getTeam = async (id) => {
+        let response = await axios.get('/api/teams/' + id)
+        team.value = response.data.data;
     }
 
-    const storeCompany = async (data) => {
+    const storeTeam = async (data) => {
         errors.value = ''
         try {
-            await axios.post('/api/companies/', data)
+            await axios.post('/api/teams/', data)
         } catch (e) {
             if (e.response.status === 422) {
                 errors.value = e.response.data.errors
@@ -29,11 +29,11 @@ export default function useCompanies() {
         }
     }
 
-    const updateCompany = async (id) => {
+    const updateTeam = async (id) => {
         errors.value = ''
         success.value = ''
         try {
-            await axios.put('/api/companies/' + id, company.value)
+            await axios.put('/api/teams/' + id, team.value)
         } catch (e) {
             if (e.response.status === 422) {
                 errors.value = e.response.data.errors
@@ -41,14 +41,14 @@ export default function useCompanies() {
         }
     }
 
-    const destroyCompany = async (id) => {
-        await axios.delete('/api/companies/' + id)
+    const destroyTeam = async (id) => {
+        await axios.delete('/api/teams/' + id)
     }
 
     const closeModal = async (successMsg) => {
         modalActive.value = false
         success.value = successMsg
-        await getCompanies();
+        await getTeams();
     }
 
     const closeSuccessAlert = async () => {
@@ -56,16 +56,16 @@ export default function useCompanies() {
     }
 
     return {
-        companies,
-        company,
+        teams: teams,
+        team: team,
         errors,
         success,
         modalActive,
-        getCompanies,
-        getCompany,
-        storeCompany,
-        updateCompany,
-        destroyCompany,
+        getTeams,
+        getTeam,
+        storeTeam,
+        updateTeam,
+        destroyTeam,
         closeModal,
         closeSuccessAlert
     }

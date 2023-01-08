@@ -4,7 +4,7 @@ import {Head, Link, useForm} from "@inertiajs/inertia-vue3";
 import BreezeButton from "@/Components/Button.vue";
 
 const props = defineProps({
-  blogs: {
+  teams: {
     type: Object,
     default: () => ({}),
   },
@@ -20,7 +20,7 @@ function destroy(id) {
 
 <template>
 
-  <Head title="Blogs"/>
+  <Head title="Teams"/>
 
   <BreezeAuthenticatedLayout>
     <template #header>
@@ -31,13 +31,23 @@ function destroy(id) {
 
     <div class="py-12">
       <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
+
         <div
-            v-if="$page.props.flash.message"
+            v-if="$page.props.flash.success"
             class="p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800"
             role="alert"
         >
                     <span class="font-medium">
-                        {{ $page.props.flash.message }}
+                        {{ $page.props.flash.success }}
+                    </span>
+        </div>
+        <div
+            v-if="$page.props.flash.error"
+            class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800"
+            role="alert"
+        >
+                    <span class="font-medium">
+                        {{ $page.props.flash.error }}
                     </span>
         </div>
         <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
